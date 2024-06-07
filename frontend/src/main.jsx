@@ -4,7 +4,7 @@ import App from "./App.jsx";
 import Projects from "./Projects.jsx";
 import Home from "./Home.jsx";
 import SignIn from "./Sign-in.jsx";
-import Signup from "./Signup.jsx";
+import SignUp from "./Components/Signup.jsx";
 import Dashboard from "./Dashboard.jsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -28,12 +28,12 @@ const router = createBrowserRouter([
   },
   {
     path: "/signup",
-    element: <Signup />
+    element: <SignUp />
   },
   {
     path: "/dashboard",
     element: <Dashboard />
-  }
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
