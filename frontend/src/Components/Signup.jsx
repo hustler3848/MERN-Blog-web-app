@@ -4,7 +4,6 @@ import Header from "./Header";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Alert, Spinner } from "flowbite-react";
-// import { HiInformationCircle } from "react-icons";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -12,6 +11,8 @@ function SignUp() {
   const [errorMsg, setErrorMsg] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // Making a constant and pass it to as prop for succesfull signup message
+  const [signupMsg, setsignupMsg] = useState(false)
   // Handle changes in form inputs
   const handleChangeInForm = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
@@ -59,6 +60,7 @@ function SignUp() {
       // Navigate to the sign-in page if the request is successful
       if (res.ok) {
         navigate("/login");
+        setsignupMsg(true)
       }
     } catch (error) {
       // Handle any errors during the fetch process
@@ -96,7 +98,7 @@ function SignUp() {
               className="rounded-lg border bg-card text-card-foreground shadow-lg bg-white w-full max-w-md"
               data-v0-t="card"
             >
-              <div className="flex flex-col p-6 space-y-1">
+              <div className="flex flex-col px-6 py-4 space-y-1">
                 <h3 className="whitespace-nowrap font-semibold tracking-tight text-2xl">
                   Create an account
                 </h3>
@@ -105,7 +107,7 @@ function SignUp() {
                 </p>
               </div>
               <form method="POST" onSubmit={handleSubmit}>
-                <div className="p-6 grid gap-4">
+                <div className="p-6 grid gap-2">
                   <div className="grid gap-2">
                     <label
                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -154,10 +156,13 @@ function SignUp() {
                     />
                   </div>
                 </div>
+                <div className="px-6">
+                  Already signed up ? <Link to='/login' className='text-blue underline' >login</Link>
+                </div>
                 <div className="flex items-center p-6">
                   <button
                     type="submit"
-                    className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:ring-2  disabled:opacity-50 bg-black text-white  hover:bg-slate-950 h-10 px-4 py-2 w-full"
+                    className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:ring-2  disabled:opacity-50 bg-black text-white  hover:bg-slate-900 h-10 px-4 py-2 w-full"
                     disabled={loading}
                   >
                     {loading ? (
