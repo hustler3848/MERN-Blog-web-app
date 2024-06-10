@@ -29,7 +29,8 @@ export const signup = async (req, res, next) => {
 
 
 export const continueWithGoogle = async (req, res, next) => {
-    const {googleUserName, email, imageUrl} = req.body;
+    const {googleUserName, email, imageUrl, uid} = req.body;
+    console.log("logged request from backend: ", req.body);
     try {
         const user = await User.findOne({email});
         if(user){
@@ -39,14 +40,15 @@ export const continueWithGoogle = async (req, res, next) => {
                 httpOnly: true,
             }).json(rest);
         }else{
-            const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
-            const hashedPassword = bcryptjs.hash(generatedPassword, 10);
+            // const generatedPassword = Math.random().toString(36).slice(-8);
+            const hashedPassword = await bcryptjs.hash(uid, 10);
             const newUser = new User({
                 username: googleUserName.toLowerCase().split(' ').join('') + Math.random().toString(9).slice(-4),
                 email,
                 password: hashedPassword,
                 profilePic: imageUrl,
             })
+        
             await newUser.save();
             console.log(req.body);
             const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);

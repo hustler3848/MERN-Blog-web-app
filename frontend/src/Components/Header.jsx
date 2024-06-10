@@ -14,13 +14,14 @@ import {
 } from "flowbite-react";
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
-import { FaMoon } from "react-icons/fa";
+import { FaMoon, FaSun } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { toogleTheme } from "../redux/theme/themeSlice";
 function Header() {
   const dispatch = useDispatch()
   const path = useLocation().pathname;
   const { currentUser } = useSelector((state) => state.user);
+  const {theme} = useSelector((state)=> state.theme)
   return (
     <Navbar className="border-b-2 shadow-md dark:bg-slate-950">
       <Link
@@ -59,8 +60,8 @@ function Header() {
         </Navbar.Link>
       </NavbarCollapse>
       <div className="flex flex-row gap-2 mf:order-2">
-        <Button className="w-12 h-10 hidden sm:inline" color="gray" pill onClick={()=> dispatch(toogleTheme())} >
-          <FaMoon />
+        <Button className="hidden sm:inline" color="gray" onClick={()=> dispatch(toogleTheme())} >
+          {theme === 'light' ? (<FaMoon />): (<FaSun/>)}
         </Button>
         {currentUser ? (
           <Dropdown
