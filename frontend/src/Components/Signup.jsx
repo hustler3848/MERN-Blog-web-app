@@ -4,6 +4,7 @@ import Header from "./Header";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Alert, Spinner } from "flowbite-react";
+import OAuth from "./OAuth";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -74,9 +75,9 @@ function SignUp() {
     <>
       <Header />
       <div className="min-h-[100vh] flex flex-col">
-        <section className="w-full py-4 md:py-24 lg:py-12 bg-gray-100 dark:bg-gray-800">
+        <section className="w-full py-4 md:py-24 lg:py-12 bg-gray-100 dark:bg-slate-950">
           <div className="container flex flex-col sm:flex-row items-center justify-center gap-6 px-4 md:px-6 ">
-            <div className="space-y-4">
+            <div className="space-y-4 ">
               <Link
                 to="/"
                 className="self-center hidden lg:inline whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white"
@@ -95,7 +96,7 @@ function SignUp() {
               </p>
             </div>
             <div
-              className="rounded-lg border bg-card text-card-foreground shadow-lg bg-white w-full max-w-md"
+              className="rounded-lg border dark:border-slate-800 dark:shadow-stone-700 bg-card text-card-foreground shadow-lg bg-white dark:bg-black w-full max-w-md"
               data-v0-t="card"
             >
               <div className="flex flex-col px-6 py-4 space-y-1">
@@ -116,7 +117,7 @@ function SignUp() {
                       Username
                     </label>
                     <input
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-950 bg-gray-100"
                       id="username"
                       placeholder="John Doe"
                       type="text"
@@ -132,7 +133,7 @@ function SignUp() {
                       Email
                     </label>
                     <input
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-slate-950 bg-gray-100"
                       id="email"
                       placeholder="m@example.com"
                       // required="true"
@@ -148,7 +149,7 @@ function SignUp() {
                       Password
                     </label>
                     <input
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:bg-slate-950 bg-gray-100 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                       onChange={handleChangeInForm}
                       id="password"
                       type="password"
@@ -159,7 +160,7 @@ function SignUp() {
                 <div className="px-6">
                   Already signed up ? <Link to='/login' className='text-blue underline' >login</Link>
                 </div>
-                <div className="flex items-center p-6">
+                <div className="flex flex-col gap-2 items-center p-6">
                   <button
                     type="submit"
                     className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:ring-2  disabled:opacity-50 bg-black text-white  hover:bg-slate-900 h-10 px-4 py-2 w-full"
@@ -174,6 +175,7 @@ function SignUp() {
                       "Sign up"
                     )}
                   </button>
+                  <OAuth  />
                 </div>
                 {errorMsg && (
                   <Alert className="mt-1" color="red">
