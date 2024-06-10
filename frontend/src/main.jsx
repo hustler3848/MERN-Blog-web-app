@@ -10,6 +10,7 @@ import ThemeProvider from './ThemeProvider.jsx'
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { persistor, store } from "./redux/store.js";
+import PrivateRoute from "./Components/PrivateRoute.jsx";
 
 // import { store } from './app/store
 import { Provider } from 'react-redux'
@@ -37,10 +38,11 @@ const router = createBrowserRouter([
     path: "/signup",
     element: <SignUp />
   },
+  
   {
-    path: "/dashboard",
-    element: <Dashboard />
-  },
+    path: '/dashboard',
+    element: <PrivateRoute />,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
