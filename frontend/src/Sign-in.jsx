@@ -61,7 +61,7 @@ function SignIn() {
       }
       // Navigate to the sign-in page if the request is successful
       if (res.ok) {
-        navigate("/");
+        navigate("/dashboard/?tab=profile");
         dispatch(signInSuccess(data));
         setsignupMsg(true);
       }

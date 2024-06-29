@@ -5,7 +5,7 @@ import Projects from "./Projects.jsx";
 import Home from "./Home.jsx";
 import SignIn from "./Sign-in.jsx";
 import SignUp from "./Components/Signup.jsx";
-import Dashboard from "./Dashboard.jsx";
+// import Dashboard from "./Dashboard.jsx";
 import ThemeProvider from './ThemeProvider.jsx'
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";

@@ -37,7 +37,7 @@ function OAuth() {
         if(res.ok){
           dispatch(signInSuccess(data))
           console.log(data);
-         navigate('/')
+         navigate('/dashboard/?tab=profile')
         }
         console.log(resultsFromGoogle);
       } catch (error) {

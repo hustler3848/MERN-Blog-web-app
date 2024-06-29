@@ -41,7 +41,7 @@ export const continueWithGoogle = async (req, res, next) => {
             }).json(rest);
         }else{
             // const generatedPassword = Math.random().toString(36).slice(-8);
-            const hashedPassword = await bcryptjs.hash(uid, 10);
+            const hashedPassword = await bcryptjs.hashSync(uid, 10);
             const newUser = new User({
                 username: googleUserName.toLowerCase().split(' ').join('') + Math.random().toString(9).slice(-4),
                 email,
@@ -61,4 +61,5 @@ export const continueWithGoogle = async (req, res, next) => {
         next(error)
     }
 }
+
 
