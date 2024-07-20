@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { AiOutlineComment, AiOutlineEye, AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineComment, AiOutlineEye, AiOutlineHeart, AiOutlineCompress  } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { AiOutlineX } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useRef } from "react";
@@ -9,6 +10,9 @@ import {
   updateStart,
   updateSuccess,
   updateFailure,
+  deleteUserStart,
+  deleteUserFailure,
+  deleteUserSuccess
 } from "../../redux/user/userSlice";
 import {
   getDownloadURL,
@@ -22,7 +26,8 @@ import { Alert } from "flowbite-react";
 
 function DashProfile() {
   const dispatch = useDispatch();
-  const { currentUser } = useSelector(state => state.user);
+  const { currentUser, error } = useSelector(state => state.user);
+  const [dialogBoxOpen, setdialogBoxOpen] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   // const [imageFileUploadProgress, setimageFileUploadProgress] = useState(0);
   const [imageFileUploadProgressError, setimageFileUploadProgressError] =
@@ -32,7 +37,9 @@ function DashProfile() {
   const [errorMsg, setErrorMsg] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState("null");
 
-
+  const handleDialogBox = () => {
+    setdialogBoxOpen(!dialogBoxOpen);
+  };
   const filePickerRef = useRef();
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -112,9 +119,59 @@ function DashProfile() {
     }
     console.log("Form Submitting");
   };
+  const handleDeleteUser = async (e) => {
+    setdialogBoxOpen(!dialogBoxOpen);
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/auth/delete/${currentUser._id}`,{
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if(!res.ok){
+        dispatch(deleteUserFailure(data.message))
+      }else{
+        dispatch(deleteUserSuccess(data))
+      }
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message))
+    }
+  }
   return (
     <div className="Profile flex flex-col w-full min-h-screen bg-gray-100 dark:bg-gray-900">
       <main className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+      {dialogBoxOpen && (
+            <div className="w-screen fixed top-0 left-0 z-10 h-screen bg-gray-400 dark:bg-slate-800 opacity-90">
+              <div
+                className={`z-20 flex gap-2 px-6 py-7 rounded-md bg-white dark:bg-slate-950 w-[405px] absolute top-[30%] opacity-100 left-[+40%] flex-col`}
+              >
+                <div
+                  className=" z-20 absolute w-fit p-3 top-0 right-0 cursor-pointer"
+                  onClick={handleDialogBox}
+                >
+                 <AiOutlineX className="z-20 text-md"  color="red" />
+                </div>
+                <p className="font-semibold">
+                  Are you sure you want to create a Routine ?
+                </p>
+                <div className="w-full items-start flex flex-row justify-between">
+                <button
+                type="button"
+                onClick={handleDeleteUser}
+                className="mt-8 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors dark:bg-rose-700 dark:text-white hover:dark:bg-rose-900 text-white bg-rose-600 hover:bg-primary/90 px-4 py-2"
+              >
+                Delete Account
+              </button>
+                  <button
+                    type="button"
+                    onClick={handleDialogBox}
+                    className={` mt-8 px-4 text-sm  py-2 rounded border bg-slate-800 text-white font-semibold`}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         <form
           onSubmit={handleFormSubmit}
           className="space-y-3 col-span-1 md:col-span-2"
@@ -143,7 +200,8 @@ function DashProfile() {
                 <img
                   itemType="file"
                   accept="image/*"
-                  src={imageFileUrl === null ?  "currentUser.profilePic": "imageFileUrl"}
+                  // src={imageFileUrl === null ?  ({currentUser.profilePic}): "imageFileUrl"}
+                  src={currentUser.profilePic}
                   className="hover:scale-110 transition-all duration-200 pl-6 w-auto h-[120px] object-cover pb-3"
                   alt="Your Image"
                 />
@@ -185,7 +243,7 @@ function DashProfile() {
                 </div>
               </div>
             </div>
-            <div className="Bio p-6">
+            {/* <div className="Bio p-6">
               <label
                 className="py-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 htmlFor="bio"
@@ -199,11 +257,13 @@ function DashProfile() {
                 defaultValue="I am a passionate blogger and web developer."
                 onChange={handleChangeinForm}
               ></textarea>
-            </div>
+            </div> */}
             {errorMsg && <Alert color="failure">{errorMsg} </Alert>}
+            {error && <Alert color="failure">{error} </Alert>}
             <div className="flex p-6 justify-between">
               <button
                 type="button"
+                onClick={handleDialogBox}
                 className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors dark:bg-rose-700 dark:text-white  hover:dark:bg-rose-900 text-white bg-rose-600 hover:bg-primary/90 h-10 px-4 py-2"
               >
                 Delete Account
