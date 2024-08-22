@@ -19,7 +19,7 @@ function Posts() {
             <div className="relative w-full overflow-auto">
               <table className="w-full caption-bottom text-sm">
                 <thead className="[&amp;_tr]:border-b dark:border-gray-800">
-                  <tr className="border-b dark:border-gray-800 transition-colors hover:bg-neutral-100 data-[state=selected]:bg-muted">
+                  <tr className="border-b dark:border-gray-800 transition-colors hover:bg-neutral-100 dark:hover:bg-slate-900 data-[state=selected]:bg-muted">
                     <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
                       Title
                     </th>
@@ -38,7 +38,7 @@ function Posts() {
                   </tr>
                 </thead>
                 <tbody className="[&amp;_tr:last-child]:border-0">
-                  <tr className="border-b dark:border-gray-800 transition-colors hover:bg-neutral-100 data-[state=selected]:bg-muted">
+                  <tr className="border-b dark:border-gray-800 transition-colors hover:bg-neutral-100 dark:hover:bg-slate-900 data-[state=selected]:bg-muted">
                     <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 font-medium">
                       The Importance of Blogging
                     </td>
@@ -53,7 +53,7 @@ function Posts() {
                     </td>
                     <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right"></td>
                   </tr>
-                  <tr className="border-b dark:border-gray-800 transition-colors hover:bg-neutral-100 data-[state=selected]:bg-muted">
+                  <tr className="border-b dark:border-gray-800 transition-colors dark:hover:bg-slate-900 hover:bg-neutral-100 data-[state=selected]:bg-muted">
                     <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 font-medium">
                       10 Tips for Effective SEO
                     </td>
@@ -68,7 +68,7 @@ function Posts() {
                     </td>
                     <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right"></td>
                   </tr>
-                  <tr className="border-b dark:border-gray-800 transition-colors hover:bg-neutral-100 data-[state=selected]:bg-muted">
+                  <tr className="border-b dark:border-gray-800 transition-colors dark:hover:bg-slate-900 hover:bg-neutral-100 data-[state=selected]:bg-muted">
                     <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 font-medium">
                       The Future of Content Marketing
                     </td>

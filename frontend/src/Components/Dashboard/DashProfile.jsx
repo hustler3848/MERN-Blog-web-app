@@ -95,19 +95,20 @@ function DashProfile() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (Object.keys(formData).length === 0) {
-      return setErrorMsg("Please fill out all fields");
+      return setErrorMsg("change some fields to update");
     }
     try {
       dispatch(updateStart());
       console.log("Sending Data", formData);
       const res = await fetch(
-        `http://localhost:3000/api/auth/update/${currentUser._id}`,
+        `http://localhost:3000/api/user/update/${currentUser._id}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData)
+          body: JSON.stringify(formData),
+          credentials: 'include'
         }
       );
       const data = await res.json();
@@ -125,6 +126,7 @@ function DashProfile() {
       dispatch(deleteUserStart());
       const res = await fetch(`/api/auth/delete/${currentUser._id}`,{
         method: 'DELETE',
+        credentials: 'include' 
       });
       const data = await res.json();
       if(!res.ok){
@@ -140,9 +142,9 @@ function DashProfile() {
     <div className="Profile flex flex-col w-full min-h-screen bg-gray-100 dark:bg-gray-900">
       <main className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
       {dialogBoxOpen && (
-            <div className="w-screen fixed top-0 left-0 z-10 h-screen bg-gray-400 dark:bg-slate-800 opacity-90">
+            <div className="w-screen fixed top-0 left-0 z-10 sm:px-2 h-screen bg-gray-400 dark:bg-slate-800 opacity-90">
               <div
-                className={`z-20 flex gap-2 px-6 py-7 rounded-md bg-white dark:bg-slate-950 w-[405px] absolute top-[30%] opacity-100 left-[+40%] flex-col`}
+                className={`z-20 flex gap-2 px-6 py-7 rounded-md bg-white dark:bg-black w-[405px] absolute top-[+15%] sm:top-[30%] sm:left-[+40%]  lg:top-[-30%]  opacity-100  flex-col`}
               >
                 <div
                   className=" z-20 absolute w-fit p-3 top-0 right-0 cursor-pointer"
@@ -150,8 +152,8 @@ function DashProfile() {
                 >
                  <AiOutlineX className="z-20 text-md"  color="red" />
                 </div>
-                <p className="font-semibold">
-                  Are you sure you want to create a Routine ?
+                <p className="font-semibold pt-5">
+                  Are you sure you want to Delete your account ?
                 </p>
                 <div className="w-full items-start flex flex-row justify-between">
                 <button
@@ -258,8 +260,8 @@ function DashProfile() {
                 onChange={handleChangeinForm}
               ></textarea>
             </div> */}
-            {errorMsg && <Alert color="failure">{errorMsg} </Alert>}
-            {error && <Alert color="failure">{error} </Alert>}
+            {errorMsg && <Alert className="px-2 py-2 mx-2" color="failure">{errorMsg} </Alert>}
+            {error && <Alert className="px-2 py-2 mx-2" color="failure">{error} </Alert>}
             <div className="flex p-6 justify-between">
               <button
                 type="button"
