@@ -21,23 +21,20 @@ export const login = async (req, res, next) => {
             return next(errorHandler(400, "Invalid Password"))
         }
 
-        const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET); 
-const { password: pass, ...rest } = validUser._doc;
-
-// Set the JWT token in a cookie and send a JSON response
-res.cookie('access_token', token, {
-    httpOnly: true, // Ensures the cookie is sent only in HTTP requests
-    secure: process.env.NODE_ENV === 'production', // Ensure cookie is sent only over HTTPS in production
-    sameSite: 'strict', // Helps prevent CSRF attacks
-});
-
-res.status(200).json({
-    message: 'Login successful',
-    user: rest // Optionally send user data without password
-});
-
+        const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
+        const { password: pass, ...rest } = validUser._doc;
+        // Set the JWT token in a cookie and send a JSON response
+        res.cookie('access_token', token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'None',
+        });
+        console.log("Token is: ", token);
+        res.status(200).json({
+            message: 'Login successful',
+            id: validUser._id
+        });
         console.log(validUser._id);
-        
     } catch (error) {
         next(error)
     }

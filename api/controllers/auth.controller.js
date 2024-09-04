@@ -38,6 +38,7 @@ export const continueWithGoogle = async (req, res, next) => {
             const {password, ...rest} = user._doc;
             res.status(200).cookie('access_token', token, {
                 httpOnly: true,
+                sameSite: 'None',
             }).json(rest);
         }else{
             // const generatedPassword = Math.random().toString(36).slice(-8);
@@ -51,11 +52,21 @@ export const continueWithGoogle = async (req, res, next) => {
         
             await newUser.save();
             console.log(req.body);
+            // jwt 
             const token = jwt.sign({id: newUser._id}, process.env.JWT_SECRET);
             const {password, ...rest} = newUser._doc;
-            res.status(200).cookie('access_token', token, {
+            // res.status(200).cookie('access_token', token, {
+            //     httpOnly: true,
+            // }).json(rest);
+            res.cookie('access_token', token, {
                 httpOnly: true,
-            }).json(rest);
+                sameSite: 'None',
+            });
+            console.log("Token is: ", token);
+            res.status(200).json({
+                message: 'Login successful'
+            });
+            console.log(validUser._id);
         }
     } catch (error) {
         next(error)

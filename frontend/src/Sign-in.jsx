@@ -37,7 +37,6 @@ function SignIn() {
 
     try {
       dispatch(SignInStart());
-
       // Log the formData being sent to the server
       console.log("Sending data:", formData);
 

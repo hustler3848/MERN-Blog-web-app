@@ -12,7 +12,8 @@ import {
   updateFailure,
   deleteUserStart,
   deleteUserFailure,
-  deleteUserSuccess
+  deleteUserSuccess,
+  signoutSuccess
 } from "../../redux/user/userSlice";
 import {
   getDownloadURL,
@@ -87,44 +88,58 @@ function DashProfile() {
   };
 
     // Printing Value of Inputs in form
+  const handleSignOut = async () => {
+    try{
+      const res = await fetch('/api/user/signout', {
+      method: 'POST',
+      })
+      const data = await res.json();
+      if(!res.ok){
+        console.log(data.message);
+      }else{
+        dispatch(signoutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
   const handleChangeinForm = (e) => {
     // setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
     setFormData({ ...formData, [e.target.id]: e.target.value });
     console.log(formData);
   };
-  const handleFormSubmit = async (e) => {
+  const handleProfileFormSubmit = async (e) => {
     e.preventDefault();
     if (Object.keys(formData).length === 0) {
-      return setErrorMsg("change some fields to update");
+      return setErrorMsg("Change some fields to update");
     }
+
     try {
       dispatch(updateStart());
-      console.log("Sending Data", formData);
-      const res = await fetch(
-        `http://localhost:3000/api/user/update/${currentUser._id}`,
-        {
+      const res = await fetch(`http://localhost:3000/api/user/update/${currentUser._id}`, {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json",
+              "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
-          credentials: 'include'
-        }
-      );
+          credentials: 'include', // Include cookies in the request
+      });
+
       const data = await res.json();
       if (res.ok) {
-        dispatch(updateSuccess(data));
+          dispatch(updateSuccess(data));
+      }  else {
+          throw new Error(data.message);
       }
     } catch (error) {
       dispatch(updateFailure(error.message));
     }
-    console.log("Form Submitting");
-  };
+};
   const handleDeleteUser = async (e) => {
     setdialogBoxOpen(!dialogBoxOpen);
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`/api/auth/delete/${currentUser._id}`,{
+      const res = await fetch(`/api/user/delete/${currentUser._id}`,{
         method: 'DELETE',
         credentials: 'include' 
       });
@@ -144,7 +159,7 @@ function DashProfile() {
       {dialogBoxOpen && (
             <div className="w-screen fixed top-0 left-0 z-10 sm:px-2 h-screen bg-gray-400 dark:bg-slate-800 opacity-90">
               <div
-                className={`z-20 flex gap-2 px-6 py-7 rounded-md bg-white dark:bg-black w-[405px] absolute top-[+15%] sm:top-[30%] sm:left-[+40%]  lg:top-[-30%]  opacity-100  flex-col`}
+                className={`z-20 flex gap-2 px-6 py-7 rounded-md bg-white dark:bg-black w-[405px] absolute top-[+15%] sm:top-[30%] sm:left-[+40%]  lg:top-[30%]  opacity-100  flex-col`}
               >
                 <div
                   className=" z-20 absolute w-fit p-3 top-0 right-0 cursor-pointer"
@@ -175,7 +190,7 @@ function DashProfile() {
             </div>
           )}
         <form
-          onSubmit={handleFormSubmit}
+          onSubmit={handleProfileFormSubmit}
           className="space-y-3 col-span-1 md:col-span-2"
         >
         {currentUser._id}
@@ -262,20 +277,29 @@ function DashProfile() {
             </div> */}
             {errorMsg && <Alert className="px-2 py-2 mx-2" color="failure">{errorMsg} </Alert>}
             {error && <Alert className="px-2 py-2 mx-2" color="failure">{error} </Alert>}
-            <div className="flex p-6 justify-between">
+            <div className='px-3 pt-2 pb-1'>
+            <button
+                type="button"
+                onClick={handleProfileFormSubmit}
+                className="w-full whitespace-nowrap rounded-md text-sm font-medium  transition-colors dark:bg-transparent dark:border dark hover:dark:bg-white hover:dark:text-black hover:bg-gray-100 hover:text-black text-white bg-black h-10 px-4 py-2"
+              >
+                Update
+              </button>
+            </div>
+            <div className="flex px-6 pt-3 pb-6 justify-between">
               <button
                 type="button"
                 onClick={handleDialogBox}
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors dark:bg-rose-700 dark:text-white  hover:dark:bg-rose-900 text-white bg-rose-600 hover:bg-primary/90 h-10 px-4 py-2"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors dark:bg-rose-700 dark:text-white  hover:dark:bg-rose-900 bg-rose-100 text-rose-600 hover:bg-primary/90 h-10 px-4 py-2"
               >
                 Delete Account
               </button>
               <button
-                type="submit"
-                onClick={handleFormSubmit}
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium  transition-colors dark:bg-transparent dark:border dark:text-white hover:dark:text-black hover:dark:bg-white text-white bg-black h-10 px-4 py-2"
+                type="button"
+                onClick={handleSignOut}
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium  transition-colors dark:bg-transparent dark:border dark:text-white hover:dark:text-black hover:dark:bg-white bg-gray-100 text-black h-10 px-4 py-2"
               >
-                Save Changes
+                Sign Out
               </button>
             </div>
           </section>
