@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.ql-editor{
+    font-size: 1.2rem;
+    min-height: 200px;
+}
+.react-tagsinputForDark{
+    background-color: black !important;
+}
+.react-tagsinput-inputForDark{
+    background-color: #000 !important;
+    border: 1px solid white !important;
+    color: aliceblue !important;
+}

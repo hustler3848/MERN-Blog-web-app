@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Posts() {
   return (
@@ -8,12 +9,13 @@ function Posts() {
         <div>
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold">All Posts</h2>
-            <button
+            <Link
+            to='/posts/create'
               className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 bg-black
                   text-white h-9 rounded-md px-3"
             >
-              Add New
-            </button>
+              Add New 
+            </Link>
           </div>
           <div className="mt-4 border dark:border-gray-800 shadow-sm rounded-lg">
             <div className="relative w-full overflow-auto">

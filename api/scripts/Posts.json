@@ -1,0 +1,112 @@
+[
+  {
+    "user_id": 1,
+    "thumbnail": "https://imgs.search.brave.com/OXGw3p6f5RlPtGmmnGMmihJz0s02GNBeGOT4vyRhDig/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJjYXZlLmNv/bS93cC93cDg5MDQw/MTYuanBn",
+    "postTitle": "Understanding the MERN Stack",
+    "postDescription": "An introduction to the MERN stack for building full-stack web applications.",
+    "auther": "Alice Johnson",
+    "views": "150",
+    "comments": 12,
+    "Likes": "25",
+    "publishedDate": "2024-09-26T09:00:00Z"
+  },
+  {
+    "user_id": 2,
+    "thumbnail": "https://imgs.search.brave.com/3mArhdq0CgJyMPb9WnRe8DMRDTfX9tIH9kXxbacomtA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS1waG90/by9qYXZhc2NyaXB0/LXByb2dyYW1taW5n/LWNvZGUtYWJzdHJh/Y3QtdGVjaG5vbG9n/eS1iYWNrZ3JvdW5k/XzI3MjMwNi0xNTUu/anBnP3NpemU9NjI2/JmV4dD1qcGc",
+    "postTitle": "JavaScript Best Practices for Beginners",
+    "postDescription": "A guide to writing clean and efficient JavaScript code.",
+    "auther": "Bob Smith",
+    "views": "275",
+    "comments": 18,
+    "Likes": "50",
+    "publishedDate": "2024-09-25T14:30:00Z"
+  },
+  {
+    "user_id": 3,
+    "thumbnail": "https://imgs.search.brave.com/8Fw13v3k8AOqpT-zVNzEUO9mRlTlvKLu4NUTnRRPMiQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9ibG9n/LmxvZ3JvY2tldC5j/b20vd3AtY29udGVu/dC91cGxvYWRzLzIw/MjAvMDQvY3NzLWZs/ZXhib3gtdnMtY3Nz/LWdyaWQucG5n",
+    "postTitle": "CSS Grid vs Flexbox: Which One to Use?",
+    "postDescription": "A comparison between CSS Grid and Flexbox for layout design.",
+    "auther": "Charlie Davis",
+    "views": "320",
+    "comments": 5,
+    "Likes": "65",
+    "publishedDate": "2024-09-20T16:15:00Z"
+  },
+  {
+    "user_id": 4,
+    "thumbnail": "https://imgs.search.brave.com/ko0JQLlNir9cY-oIuWH4IYy71Kyid6OM6b3nd8H_-GY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/YXN0ZXJhLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMjAyMy8x/Mi9ibG9nLXQtNy5q/cGc",
+    "postTitle": "How to Build RESTful APIs with Node.js",
+    "postDescription": "Step-by-step guide to creating RESTful APIs using Node.js and Express.",
+    "auther": "David Brown",
+    "views": "210",
+    "comments": 22,
+    "Likes": "35",
+    "publishedDate": "2024-09-18T10:45:00Z"
+  },
+  {
+    "user_id": 5,
+    "thumbnail": "https://imgs.search.brave.com/1mLxe_o1snrO5vprYSpBbuHOHSsWxWC4-8jXxynePto/rs:fit:860:0:0:0/g:ce/aHR0cDovL2J1aWx0/aW4uY29tL3NpdGVz/L3d3dy5idWlsdGlu/LmNvbS9maWxlcy9z/dHlsZXMvY2tlZGl0/b3Jfb3B0aW1pemUv/cHVibGljL2lubGlu/ZS1pbWFnZXMvMTBf/cmVhY3QtaG9va3Mu/anBn",
+    "postTitle": "Introduction to React Hooks",
+    "postDescription": "A beginner's guide to using React Hooks for managing state and effects.",
+    "auther": "Evelyn Clark",
+    "views": "400",
+    "comments": 32,
+    "Likes": "80",
+    "publishedDate": "2024-09-15T12:00:00Z"
+  },
+  {
+    "user_id": 6,
+    "thumbnail": "https://imgs.search.brave.com/NAyWWOOS31IUwBq_A48JOfw2c119eZMg8mBA_4sG3cU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdHls/ZXMucmVkZGl0bWVk/aWEuY29tL3Q1XzJy/andkL3N0eWxlcy9j/b21tdW5pdHlJY29u/X3Zla3pmM29hdHJz/NjEucG5n",
+    "postTitle": "Mastering MongoDB for Web Development",
+    "postDescription": "A comprehensive guide to using MongoDB as a database for web development.",
+    "auther": "Frank Wilson",
+    "views": "180",
+    "comments": 14,
+    "Likes": "40",
+    "publishedDate": "2024-09-12T08:30:00Z"
+  },
+  {
+    "user_id": 7,
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQqLJjceiM6ND-tP3A43oVodaSnv6JijupkA&s",
+    "postTitle": "Async/Await in JavaScript: A Practical Guide",
+    "postDescription": "Understanding async/await for handling asynchronous operations in JavaScript.",
+    "auther": "Grace Lee",
+    "views": "290",
+    "comments": 28,
+    "Likes": "55",
+    "publishedDate": "2024-09-10T13:20:00Z"
+  },
+  {
+    "user_id": 8,
+    "thumbnail": "https://www.devtip.co/content/images/2023/01/BTm1H.png",
+    "postTitle": "Node.js Event Loop Explained",
+    "postDescription": "A deep dive into how the Node.js event loop works to handle asynchronous tasks.",
+    "auther": "Henry Miller",
+    "views": "350",
+    "comments": 30,
+    "Likes": "70",
+    "publishedDate": "2024-09-08T15:00:00Z"
+  },
+  {
+    "user_id": 9,
+    "thumbnail": "https://ncarb.github.io/bootstrap/assets/img/bootstrap-stack.png",
+    "postTitle": "Building a Responsive UI with Bootstrap",
+    "postDescription": "Learn how to use Bootstrap to create responsive user interfaces.",
+    "auther": "Ivy Martinez",
+    "views": "500",
+    "comments": 40,
+    "Likes": "120",
+    "publishedDate": "2024-09-05T11:10:00Z"
+  },
+  {
+    "user_id": 10,
+    "thumbnail": "https://img-c.udemycdn.com/course/750x422/3653014_734b_2.jpg",
+    "postTitle": "Version Control with Git and GitHub",
+    "postDescription": "An essential guide to version control using Git and GitHub for developers.",
+    "auther": "Jack Turner",
+    "views": "620",
+    "comments": 45,
+    "Likes": "130",
+    "publishedDate": "2024-09-03T17:00:00Z"
+  }
+]

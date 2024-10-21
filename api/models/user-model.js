@@ -19,7 +19,11 @@ const userSchema = mongoose.Schema(
         },
         profilePic: {
             type: String,
-            default: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fvectors%2Fblank-profile-picture-mystery-man-973460%2F&psig=AOvVaw1xHJYYFgZ5LTUNfh-4nFYZ&ust=1717940360623000&source=images&cd=vfe&opi=89978449&ved=0CA8QjRxqFwoTCLDty9iQzIYDFQAAAAAdAAAAABAJ"
+            default: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        },
+        isAdmin: {
+            type: Boolean,
+            default: false
         },
         BioGraph: {
             type: String,

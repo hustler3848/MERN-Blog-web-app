@@ -11,6 +11,8 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { persistor, store } from "./redux/store.js";
 import PrivateRoute from "./Components/PrivateRoute.jsx";
+import Posts from "./Components/Posts/Posts.jsx";
+import PrivateRoutePost from "./Components/Posts/PrivateRoutePost.jsx";
 
 // import { store } from './app/store
 import { Provider } from 'react-redux'
@@ -24,25 +26,33 @@ const router = createBrowserRouter([
   },
   {
     path: "/projects",
-    element: <Projects />
+    element: <Projects />,
   },
   {
     path: "/home",
-    element: <Home />
+    element: <Home />,
+  },
+  {
+    path: "/posts",
+    element: <Posts />,
   },
   {
     path: "/login",
-    element: <SignIn />
+    element: <SignIn />,
   },
   {
     path: "/signup",
-    element: <SignUp />
+    element: <SignUp />,
   },
-  
+
   {
-    path: '/dashboard',
+    path: "/dashboard",
     element: <PrivateRoute />,
-  }
+  },
+  {
+    path: "/posts/create",
+    element: <PrivateRoutePost />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

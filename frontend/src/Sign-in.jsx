@@ -45,6 +45,7 @@ function SignIn() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
+        credentials: "include",
       });
 
       // Check for response status
@@ -58,14 +59,13 @@ function SignIn() {
       if (data.success === false) {
         dispatch(signInFailure(data.message));
       }
-      // Navigate to the sign-in page if the request is successful
       if (res.ok) {
-        navigate("/dashboard/?tab=profile");
         dispatch(signInSuccess(data));
+        navigate("/dashboard/?tab=profile");
+
         setsignupMsg(true);
       }
     } catch (error) {
-      // Handle any errors during the fetch process
       console.error("Fetch error:", error);
       dispatch(signInFailure(error.message));
       // setLoading(false);

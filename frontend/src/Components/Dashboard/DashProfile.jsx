@@ -1,6 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { AiOutlineComment, AiOutlineEye, AiOutlineHeart, AiOutlineCompress  } from "react-icons/ai";
+import {
+  AiOutlineComment,
+  AiOutlineEye,
+  AiOutlineHeart,
+  AiOutlineCompress,
+} from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { AiOutlineX } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +18,7 @@ import {
   deleteUserStart,
   deleteUserFailure,
   deleteUserSuccess,
-  signoutSuccess
+  signoutSuccess,
 } from "../../redux/user/userSlice";
 import {
   getDownloadURL,
@@ -23,20 +28,21 @@ import {
 } from "firebase/storage";
 import { app } from "../../firebase";
 import { Alert } from "flowbite-react";
-
+import { set } from "mongoose";
 
 function DashProfile() {
   const dispatch = useDispatch();
-  const { currentUser, error } = useSelector(state => state.user);
+  const { currentUser, error, loading } = useSelector((state) => state?.user);
   const [dialogBoxOpen, setdialogBoxOpen] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   // const [imageFileUploadProgress, setimageFileUploadProgress] = useState(0);
   const [imageFileUploadProgressError, setimageFileUploadProgressError] =
     useState(null);
   const [formData, setFormData] = useState({});
-  const [profilePicUrl, setProfilePicUrl] = useState('')
+  const [profilePicUrl, setProfilePicUrl] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState("null");
+  const [updatedMsg, setUpdatedMsg] = useState(false);
 
   const handleDialogBox = () => {
     setdialogBoxOpen(!dialogBoxOpen);
@@ -52,6 +58,8 @@ function DashProfile() {
       console.log(file);
     }
   };
+  console.log(currentUser.username);
+
   useEffect(() => {
     if (imageFile) {
       uploadImage();
@@ -78,7 +86,7 @@ function DashProfile() {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setImageFileUrl(downloadURL)
+          setImageFileUrl(downloadURL);
           // setProfilePicUrl(downloadURL);
           console.log(downloadURL);
           setFormData({ ...formData, profilePic: downloadURL });
@@ -87,22 +95,22 @@ function DashProfile() {
     );
   };
 
-    // Printing Value of Inputs in form
+  // Printing Value of Inputs in form
   const handleSignOut = async () => {
-    try{
-      const res = await fetch('/api/user/signout', {
-      method: 'POST',
-      })
+    try {
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
+      });
       const data = await res.json();
-      if(!res.ok){
+      if (!res.ok) {
         console.log(data.message);
-      }else{
+      } else {
         dispatch(signoutSuccess());
       }
     } catch (error) {
       console.log(error.message);
     }
-  }
+  };
   const handleChangeinForm = (e) => {
     // setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -116,84 +124,109 @@ function DashProfile() {
 
     try {
       dispatch(updateStart());
-      const res = await fetch(`http://localhost:3000/api/user/update/${currentUser._id}`, {
+      const res = await fetch(
+        `http://localhost:3000/api/user/update/${currentUser._id}`,
+        {
           method: "PUT",
           headers: {
-              "Content-Type": "application/json",
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
-          credentials: 'include', // Include cookies in the request
-      });
+          credentials: "include", // Include cookies in the request
+          withCredentials: true,
+        }
+      );
 
       const data = await res.json();
       if (res.ok) {
-          dispatch(updateSuccess(data));
-      }  else {
-          throw new Error(data.message);
+        dispatch(updateSuccess(data));
+        setUpdatedMsg(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+        setFormData({});
+        setImageFile(null);
+        setimageFileUploadProgressError(null);
+        filePickerRef.current.value = null;
+        setTimeout(() => {
+          setUpdatedMsg(false);
+        }, 3000);
+      } else {
+        throw new Error(data.message);
       }
     } catch (error) {
       dispatch(updateFailure(error.message));
     }
-};
+  };
   const handleDeleteUser = async (e) => {
     setdialogBoxOpen(!dialogBoxOpen);
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`/api/user/delete/${currentUser._id}`,{
-        method: 'DELETE',
-        credentials: 'include' 
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+        credentials: "include",
       });
       const data = await res.json();
-      if(!res.ok){
-        dispatch(deleteUserFailure(data.message))
-      }else{
-        dispatch(deleteUserSuccess(data))
+      if (!res.ok) {
+        dispatch(deleteUserFailure(data.message));
+      } else {
+        dispatch(deleteUserSuccess(data));
       }
     } catch (error) {
-      dispatch(deleteUserFailure(error.message))
+      dispatch(deleteUserFailure(error.message));
     }
-  }
+  };
   return (
     <div className="Profile flex flex-col w-full min-h-screen bg-gray-100 dark:bg-gray-900">
       <main className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
-      {dialogBoxOpen && (
-            <div className="w-screen fixed top-0 left-0 z-10 sm:px-2 h-screen bg-gray-400 dark:bg-slate-800 opacity-90">
+        {dialogBoxOpen && (
+          <div className="w-screen fixed top-0 left-0 z-10 sm:px-2 h-screen bg-gray-400 dark:bg-slate-800 opacity-90">
+            <div
+              className={`z-20 flex gap-2 px-6 py-7 rounded-md bg-white dark:bg-black w-[405px] absolute top-[+15%] sm:top-[30%] sm:left-[+40%]  lg:top-[30%]  opacity-100  flex-col`}
+            >
               <div
-                className={`z-20 flex gap-2 px-6 py-7 rounded-md bg-white dark:bg-black w-[405px] absolute top-[+15%] sm:top-[30%] sm:left-[+40%]  lg:top-[30%]  opacity-100  flex-col`}
+                className=" z-20 absolute w-fit p-3 top-0 right-0 cursor-pointer"
+                onClick={handleDialogBox}
               >
-                <div
-                  className=" z-20 absolute w-fit p-3 top-0 right-0 cursor-pointer"
-                  onClick={handleDialogBox}
-                >
-                 <AiOutlineX className="z-20 text-md"  color="red" />
-                </div>
-                <p className="font-semibold pt-5">
-                  Are you sure you want to Delete your account ?
-                </p>
-                <div className="w-full items-start flex flex-row justify-between">
+                <AiOutlineX className="z-20 text-md" color="red" />
+              </div>
+              <p className="font-semibold pt-5">
+                Are you sure you want to Delete your account ?
+              </p>
+              <div className="w-full items-start flex flex-row justify-between">
                 <button
-                type="button"
-                onClick={handleDeleteUser}
-                className="mt-8 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors dark:bg-rose-700 dark:text-white hover:dark:bg-rose-900 text-white bg-rose-600 hover:bg-primary/90 px-4 py-2"
-              >
-                Delete Account
-              </button>
-                  <button
-                    type="button"
-                    onClick={handleDialogBox}
-                    className={` mt-8 px-4 text-sm  py-2 rounded border bg-slate-800 text-white font-semibold`}
-                  >
-                    Cancel
-                  </button>
-                </div>
+                  type="button"
+                  onClick={handleDeleteUser}
+                  className="mt-8 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors dark:bg-rose-700 dark:text-white hover:dark:bg-rose-900 text-white bg-rose-600 hover:bg-primary/90 px-4 py-2"
+                >
+                  Delete Account
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDialogBox}
+                  className={` mt-8 px-4 text-sm  py-2 rounded border bg-slate-800 text-white font-semibold`}
+                >
+                  Cancel
+                </button>
               </div>
             </div>
-          )}
+          </div>
+        )}
         <form
           onSubmit={handleProfileFormSubmit}
           className="space-y-3 col-span-1 md:col-span-2"
         >
-        {currentUser._id}
+          {updatedMsg && (
+            <div
+              className="w-[300px] border-black z-999 duration-700 shadow-lg fixed top-5 right-10 text-start mb-4 p-4 bg-green-100 text-green-800 rounded-lg"
+              style={{ zIndex: 9999 }}
+            >
+              <p>
+                Changes Saved <strong>Successfully</strong>!!!
+              </p>
+            </div>
+          )}
+          {currentUser._id}
           <section className="bg-white dark:bg-gray-800 rounded-sm shadow-sm">
             <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
               <h2 className="text-lg space-x-3 font-medium text-gray-900 dark:text-gray-100">
@@ -275,17 +308,37 @@ function DashProfile() {
                 onChange={handleChangeinForm}
               ></textarea>
             </div> */}
-            {errorMsg && <Alert className="px-2 py-2 mx-2" color="failure">{errorMsg} </Alert>}
-            {error && <Alert className="px-2 py-2 mx-2" color="failure">{error} </Alert>}
-            <div className='px-3 pt-2 pb-1'>
-            <button
+            {errorMsg && (
+              <Alert className="px-2 py-2 mx-2" color="failure">
+                {errorMsg}{" "}
+              </Alert>
+            )}
+            {error && (
+              <Alert className="px-2 py-2 mx-2" color="failure">
+                {error}{" "}
+              </Alert>
+            )}
+            <div className="px-3 pt-2 pb-1">
+              <button
                 type="button"
                 onClick={handleProfileFormSubmit}
-                className="w-full whitespace-nowrap rounded-md text-sm font-medium  transition-colors dark:bg-transparent dark:border dark hover:dark:bg-white hover:dark:text-black hover:bg-gray-100 hover:text-black text-white bg-black h-10 px-4 py-2"
+                disabled={loading}
+                className="w-full whitespace-nowrap rounded-md text-sm font-medium transition-colors dark:bg-transparent dark:border dark hover:dark:bg-white hover:dark:text-black hover:bg-gray-100 hover:text-black dark:text-white bg-transparent border border-gray-300 text-black h-10 px-4 py-2"
               >
                 Update
               </button>
             </div>
+            {currentUser.isAdmin && (
+              <div className="px-3 pt-2 pb-1 flex justify-center">
+                <Link
+                to="/posts/create"
+                  type="button"
+                  className="w-full flex items-center justify-center whitespace-nowrap text-sm shadow-md font-medium border rounded-md dark:bg-white  dark:text-black dark:hover:text-white dark:hover:bg-gray-900 bg-black text-white hover:bg-white hover:text-gray-900 transition-colors duration-300 font-mediumh-10 px-4 py-3"
+                >
+                  Create a post
+                </Link>
+              </div>
+            )}
             <div className="flex px-6 pt-3 pb-6 justify-between">
               <button
                 type="button"
