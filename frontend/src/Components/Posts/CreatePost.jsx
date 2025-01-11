@@ -15,7 +15,6 @@ import {
 import { app } from "../../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { set } from "mongoose";
 
 function CreatePost() {
   const [tags, setTags] = useState([]);
@@ -25,15 +24,15 @@ function CreatePost() {
   const [imgUploadProgress, setImgUploadProgress] = useState(null);
   const [imgUploadError, setImgUploadError] = useState(null);
   const [publishError, setPublishError] = useState(null);
-  const {currentUser} = useSelector((state) => state.user)
+  const {currentUserOfBloggingApp} = useSelector((state) => state.userOfBloggingApp)
   
   const [formData, setFormData] = useState({
     postTitle: "",
     postDescription: "",
     tags: [],
     thumbnail: "",
-    user_id: currentUser._id,
-    auther: currentUser.username,
+    user_id: currentUserOfBloggingApp._id,
+    auther: currentUserOfBloggingApp.username,
   });
   const [uploadBtn, setUploadBtn] = useState(false);
 

@@ -20,7 +20,7 @@ import { toogleTheme } from "../redux/theme/themeSlice";
 function Header() {
   const dispatch = useDispatch()
   const path = useLocation().pathname;
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUserOfBloggingApp } = useSelector((state) => state.userOfBloggingApp);
   const {theme} = useSelector((state)=> state.theme)
   return (
     <Navbar className="border-b-2 shadow-md dark:bg-slate-950">
@@ -49,6 +49,7 @@ function Header() {
         <Navbar.Link active={path === "/"} as={"div"}>
           <Link to="/">Home</Link>
         </Navbar.Link>
+        
         <Navbar.Link active={path === "/dashboard"} as={"div"}>
           <Link to="/dashboard">Dashboard</Link>
         </Navbar.Link>
@@ -63,15 +64,15 @@ function Header() {
         <Button className="hidden sm:inline" color="gray" onClick={()=> dispatch(toogleTheme())} >
           {theme === 'light' ? (<FaMoon />): (<FaSun/>)}
         </Button>
-        {currentUser ? (
+        {currentUserOfBloggingApp ? (
           <Dropdown
             arrowIcon="false"
             inline
-            label={<Avatar alt="user" img={currentUser.profilePic} rounded size='sm'/>}
+            label={<Avatar alt="user" img={currentUserOfBloggingApp.profilePic} rounded size='sm'/>}
           >
             <Dropdown.Header>
-              <span className="block text-sm">@{currentUser.username}</span>
-              <span className="block text-md">{currentUser.email}</span>
+              <span className="block text-sm">@{currentUserOfBloggingApp.username}</span>
+              <span className="block text-md">{currentUserOfBloggingApp.email}</span>
               <Link to='/dashboard?tab=profile'>
               <DropdownItem>Profile</DropdownItem>
               </Link>

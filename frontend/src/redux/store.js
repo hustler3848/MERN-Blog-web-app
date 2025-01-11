@@ -7,7 +7,7 @@ import themReducer from './theme/themeSlice'
 import persistStore from 'redux-persist/es/persistStore'
 
 const rootReducer = combineReducers({
-  user: userReducer, 
+  userOfBloggingApp: userReducer, 
   theme: themReducer
 })
 

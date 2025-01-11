@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React from "react";
 import Header from "./Components/Header";
 import { useState } from "react";
@@ -14,15 +13,14 @@ import OAuth from "./Components/OAuth";
 
 function SignIn() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
-  const { loading, error: errorMsg } = useSelector((state) => state.user);
+  const [formData, setFormData] = useState({});
+  const { loading, error: errorMsg } = useSelector((state) => state.userOfBloggingApp);
   // Making a constant and pass it to as prop for succesfull signup message
   const [signupMsg, setsignupMsg] = useState(false);
   // Handle changes in form inputs
   const handleChangeInForm = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
-    // console.log( e.target.value);
     console.log(formData);
   };
 
@@ -30,7 +28,6 @@ function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if all required fields are filled
     if (!formData.username || !formData.password) {
       return dispatch(signInFailure("please fill out all the fields"));
     }
@@ -60,9 +57,8 @@ function SignIn() {
         dispatch(signInFailure(data.message));
       }
       if (res.ok) {
-        dispatch(signInSuccess(data));
+        dispatch(signInSuccess(data.user));
         navigate("/dashboard/?tab=profile");
-
         setsignupMsg(true);
       }
     } catch (error) {

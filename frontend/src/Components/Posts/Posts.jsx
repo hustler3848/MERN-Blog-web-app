@@ -26,6 +26,7 @@ function Posts() {
           setPosts(data);
         } catch (error) {
           // setError(error.message);
+          console.error("Error fetching posts:", error);
         }
       };
 
@@ -65,7 +66,7 @@ function Posts() {
               <div className="w-full pubsAndAdditionalInfo flex flex-col md:flex-row justify-start md:justify-between ">
                 <div className="publisher">
                   <p className="text-md">
-                    - {post.auther} on {post.publishedDate}
+                    - {post.auther} on {post.createdAt.toString().slice(0, 10)}
                   </p>
                 </div>
                 <div className="addons flex flex-row gap-3 items-end justify-end md:justify-end">

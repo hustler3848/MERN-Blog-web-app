@@ -37,7 +37,7 @@ export const updateUser = async (req, res, next) => {
           $set: {
             username: req.body.username,
             email: req.body.email,
-            profilePicture: req.body.profilePicture,
+            profilePic: req.body.profilePic,
             password: req.body.password,
           },
         },
@@ -45,6 +45,7 @@ export const updateUser = async (req, res, next) => {
       );
       const { password, ...rest } = updatedUser._doc;
       res.status(200).json(rest);
+      console.log(updatedUser);
     } catch (error) {
       next(error);
     }

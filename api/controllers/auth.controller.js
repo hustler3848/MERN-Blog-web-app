@@ -43,7 +43,6 @@ export const continueWithGoogle = async (req, res, next) => {
 
   try {
     const user = await User.findOne({ email });
-
     if (user) {
       const token = jwt.sign(
         { id: user._id, isAdmin: user.isAdmin },
@@ -51,7 +50,6 @@ export const continueWithGoogle = async (req, res, next) => {
         { expiresIn: "24h" }
       );
       console.log("token is: ", token);
-
       const { password, ...rest } = user._doc;
       return res
         .status(200)
@@ -84,6 +82,7 @@ export const continueWithGoogle = async (req, res, next) => {
         })
         .status(200)
         .json({
+          success: true,
           message: "Login successful",
           user: rest, 
         });

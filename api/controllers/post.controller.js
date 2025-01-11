@@ -1,4 +1,5 @@
 import Posts from "../models/post-model.js";
+import mongoose from "mongoose";
 
 export const createPost = async (req, res) => {
   if (!req.user.isAdmin) {
@@ -36,6 +37,35 @@ export const getPosts = async (req, res) => {
   try {
     const posts = await Posts.find();
     res.json(posts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export const getPostsByUser = async (req, res) => {
+  const userId = req.params.userId;  
+  try {
+    const { userId } = req.params;
+
+    console.log("Received UserID:", userId);
+    console.log("Type of UserID:", typeof userId);
+
+    const userPosts = await Posts.find({ user_id: userId.trim() });
+
+    console.log("Query Sent to MongoDB:", { user_id: userId.trim() });
+    console.log("Fetched Posts:", userPosts);
+
+    if (userPosts.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No posts found for this user.",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User posts fetched successfully.",
+      data: userPosts,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Header from "./Components/Header";
 import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
-import Posts from "./Components/Dashboard/DashPosts";
+import DashPosts from "./Components/Dashboard/DashPosts";
 import { FaUser } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import DashProfile from "./Components/Dashboard/DashProfile";
@@ -13,7 +13,10 @@ import { useSelector } from "react-redux";
 function Dashboard() {
   const location = useLocation()
   const [tab, setTab] = useState('') 
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUserOfBloggingApp } = useSelector(
+    (state) => state.userOfBloggingApp
+  );
+  
   useEffect(()=> {
     const urlParams = new URLSearchParams(location.search)
     const tabFromUrl = urlParams.get('tab')
@@ -46,12 +49,11 @@ function Dashboard() {
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <FaUser></FaUser> <p className="font-semibold text-md">Profile</p>
+                    <FaUser></FaUser>{" "}
+                    <p className="font-semibold text-md">Profile</p>
                   </div>
                   <div className="Badge px-3 py-1 text-xs border border-black dark:border-white rounded-full dark:bg-slate-950">
-                    {
-                      currentUser.isAdmin ? 'Admin' : 'User'
-                    }
+                    {currentUserOfBloggingApp.isAdmin ? "Admin" : "User"}
                   </div>
                 </Link>
                 <Link
@@ -71,7 +73,7 @@ function Dashboard() {
         {/* <DashProfile /> */}
         {tab === "profile" && <DashProfile />}
         {/* <Posts /> */}
-        {tab === "posts" && <Posts />}
+        {tab === "posts" && <DashPosts />}
       </div>
     </div>
   );

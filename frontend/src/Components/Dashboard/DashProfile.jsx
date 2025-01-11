@@ -1,10 +1,9 @@
-/* eslint-disable no-unused-vars */
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   AiOutlineComment,
   AiOutlineEye,
   AiOutlineHeart,
-  AiOutlineCompress,
 } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { AiOutlineX } from "react-icons/ai";
@@ -28,21 +27,24 @@ import {
 } from "firebase/storage";
 import { app } from "../../firebase";
 import { Alert } from "flowbite-react";
-import { set } from "mongoose";
 
 function DashProfile() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { currentUser, error, loading } = useSelector((state) => state?.user);
+  const { currentUserOfBloggingApp, error, loading } = useSelector(
+    (state) => state.userOfBloggingApp
+  );
   const [dialogBoxOpen, setdialogBoxOpen] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   // const [imageFileUploadProgress, setimageFileUploadProgress] = useState(0);
   const [imageFileUploadProgressError, setimageFileUploadProgressError] =
     useState(null);
   const [formData, setFormData] = useState({});
-  const [profilePicUrl, setProfilePicUrl] = useState("");
+  // const [profilePicUrl, setProfilePicUrl] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
-  const [imageFileUrl, setImageFileUrl] = useState("null");
+  const [imageFileUrl, setImageFileUrl] = useState(currentUserOfBloggingApp.profilePic);
   const [updatedMsg, setUpdatedMsg] = useState(false);
+  const [imageUploadMsg, setImageUploadMsg] = useState(false);
 
   const handleDialogBox = () => {
     setdialogBoxOpen(!dialogBoxOpen);
@@ -53,13 +55,10 @@ function DashProfile() {
     console.log(file);
     if (file) {
       setImageFile(file);
-      // log
       setImageFileUrl(URL.createObjectURL(file));
       console.log(file);
     }
   };
-  console.log(currentUser.username);
-
   useEffect(() => {
     if (imageFile) {
       uploadImage();
@@ -74,28 +73,29 @@ function DashProfile() {
     const uploadTask = uploadBytesResumable(storageRef, imageFile);
     uploadTask.on(
       "state_changed",
-      // (snapshot) => {
-      //   const progress =
-      //     (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      // },
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Upload is ${progress}% done`);
+      },
       (error) => {
-        console.log(error);
+        console.error(error);
         setimageFileUploadProgressError(
-          "cannot upload image (file must be less than 2 MB"
+          "Cannot upload image (file must be less than 2 MB)"
         );
       },
       () => {
+        // Completion function
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setImageFileUrl(downloadURL);
-          // setProfilePicUrl(downloadURL);
+          setImageUploadMsg(true)
           console.log(downloadURL);
           setFormData({ ...formData, profilePic: downloadURL });
+          console.log(formData);
         });
       }
     );
   };
-
-  // Printing Value of Inputs in form
   const handleSignOut = async () => {
     try {
       const res = await fetch("/api/user/signout", {
@@ -125,7 +125,7 @@ function DashProfile() {
     try {
       dispatch(updateStart());
       const res = await fetch(
-        `http://localhost:3000/api/user/update/${currentUser._id}`,
+        `http://localhost:3000/api/user/update/${currentUserOfBloggingApp._id}`,
         {
           method: "PUT",
           headers: {
@@ -158,11 +158,11 @@ function DashProfile() {
       dispatch(updateFailure(error.message));
     }
   };
-  const handleDeleteUser = async (e) => {
+  const handleDeleteUser = async () => {
     setdialogBoxOpen(!dialogBoxOpen);
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+      const res = await fetch(`/api/user/delete/${currentUserOfBloggingApp._id}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -171,11 +171,13 @@ function DashProfile() {
         dispatch(deleteUserFailure(data.message));
       } else {
         dispatch(deleteUserSuccess(data));
+        navigate("/");
       }
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
     }
   };
+  
   return (
     <div className="Profile flex flex-col w-full min-h-screen bg-gray-100 dark:bg-gray-900">
       <main className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -226,16 +228,16 @@ function DashProfile() {
               </p>
             </div>
           )}
-          {currentUser._id}
+          {currentUserOfBloggingApp._id}
           <section className="bg-white dark:bg-gray-800 rounded-sm shadow-sm">
             <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
               <h2 className="text-lg space-x-3 font-medium text-gray-900 dark:text-gray-100">
                 Profile Settings
               </h2>
             </div>
-            <div className="flex flex-row justify-start items-center gap-5">
+            <div className="flex flex-row justify-start items-center gap-5 overflow-hidden">
               <div
-                className=" h-[120px] w-fit sm:w-4/12 flex flex-row items-center rounded-full justify-start border-none overflow-hidden"
+                className=" h-[120px] flex flex-col w-fit sm:w-4/12 items-start rounded-full justify-start border-none "
                 onClick={() => {
                   filePickerRef.current.click();
                 }}
@@ -250,14 +252,20 @@ function DashProfile() {
                 <img
                   itemType="file"
                   accept="image/*"
-                  // src={imageFileUrl === null ?  ({currentUser.profilePic}): "imageFileUrl"}
-                  src={currentUser.profilePic}
-                  className="hover:scale-110 transition-all duration-200 pl-6 w-auto h-[120px] object-cover pb-3"
+                  src={
+                    imageFileUrl !== null
+                      ? imageFileUrl
+                      : currentUserOfBloggingApp.image
+                  }
+                  className="hover:scale-110 transition-all rounded-lg duration-200 pl-6 w-auto h-[120px] object-cover "
                   alt="Your Image"
                 />
                 {imageFileUploadProgressError && (
                   <Alert color="failure">{imageFileUploadProgressError}</Alert>
                 )}
+                <Alert color="success pl-6">
+                  {imageUploadMsg && <p>Click On update to Update.</p>}
+                </Alert>
               </div>
               <div className="p-2 space-y-8 w-8/12">
                 <div className="flex flex-col gap-2 w-full">
@@ -271,7 +279,7 @@ function DashProfile() {
                     <input
                       className="flex h-10 w-full rounded-md border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 bg-stone-100 text-black dark:bg-slate-700 dark:text-zinc-300 file:text-sm file:font-medium placeholder:text-muted-htmlForeground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 "
                       id="username"
-                      defaultValue={currentUser.username}
+                      defaultValue={currentUserOfBloggingApp.username}
                       onChange={handleChangeinForm}
                     />
                   </div>
@@ -286,7 +294,7 @@ function DashProfile() {
                       className="flex h-10 w-full rounded-md border-none px-3 py-2 text-sm ring-offset-background file:border-0 bg-stone-100 text-black dark:bg-slate-700 dark:text-zinc-300 file:text-sm file:font-medium placeholder:text-muted-htmlForeground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 "
                       id="email"
                       type="email"
-                      defaultValue={currentUser.email}
+                      defaultValue={currentUserOfBloggingApp.email}
                       onChange={handleChangeinForm}
                     />
                   </div>
@@ -323,15 +331,15 @@ function DashProfile() {
                 type="button"
                 onClick={handleProfileFormSubmit}
                 disabled={loading}
-                className="w-full whitespace-nowrap rounded-md text-sm font-medium transition-colors dark:bg-transparent dark:border dark hover:dark:bg-white hover:dark:text-black hover:bg-gray-100 hover:text-black dark:text-white bg-transparent border border-gray-300 text-black h-10 px-4 py-2"
+                className="w-full whitespace-nowrap rounded-md mt-4 text-sm font-medium transition-colors dark:bg-transparent dark:border dark hover:dark:bg-white hover:dark:text-black hover:bg-gray-100 hover:text-black dark:text-white bg-transparent border border-gray-300 text-black h-10 px-4 py-2"
               >
                 Update
               </button>
             </div>
-            {currentUser.isAdmin && (
+            {currentUserOfBloggingApp.isAdmin && (
               <div className="px-3 pt-2 pb-1 flex justify-center">
                 <Link
-                to="/posts/create"
+                  to="/posts/create"
                   type="button"
                   className="w-full flex items-center justify-center whitespace-nowrap text-sm shadow-md font-medium border rounded-md dark:bg-white  dark:text-black dark:hover:text-white dark:hover:bg-gray-900 bg-black text-white hover:bg-white hover:text-gray-900 transition-colors duration-300 font-mediumh-10 px-4 py-3"
                 >

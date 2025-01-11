@@ -5,10 +5,12 @@ import Dashboard from '../Dashboard'
 import { Outlet, Navigate } from 'react-router-dom'
 
 function PrivateRoute() {
-  const {currentUser} = useSelector((state) => state.user)
-    return (
-    currentUser ? <Dashboard /> : <Navigate to='/login' />
-  )
+  const { currentUserOfBloggingApp } = useSelector(
+    (state) => state.userOfBloggingApp
+  );
+  console.log(currentUserOfBloggingApp);
+  
+    return currentUserOfBloggingApp ? <Dashboard /> : <Navigate to="/login" />;
 }
 
 export default PrivateRoute
