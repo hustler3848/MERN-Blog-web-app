@@ -65,7 +65,7 @@ function SignUp() {
       }
     } catch (error) {
       // Handle any errors during the fetch process
-      console.error("Fetch error:", error);
+      // console.error("Fetch error:", error);
       setErrorMsg("Failed to fetch");
       setLoading(false);
     }

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import slugify from "slugify";
 
 const postSchema = mongoose.Schema(
   {
@@ -8,7 +9,7 @@ const postSchema = mongoose.Schema(
     },
     thumbnail: {
       type: String,
-      required: true,
+      // required: true,
     },
     postTitle: {
       type: String,
@@ -31,16 +32,15 @@ const postSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
-    createdAt: { type: Date, default: Date.now }
-    // views:{
-    //     type: String
-    // },
-    // comments:{
-    //     type: Number
-    // },
-    // Likes:{
-    //     type: String
-    // },
+    createdAt: { type: Date, default: Date.now },
+    views:{
+        type: Number,
+        default: 0
+    },
+    Likes:{
+        type: Number,
+        default: 0
+    },
     // publishedDate:{
     //     type: Date,
     //     default: Date.now(),
@@ -49,7 +49,13 @@ const postSchema = mongoose.Schema(
   },
   { Timestamp: true }
 );
-
+// Generate slug before saving the post
+postSchema.pre("save", function (next) {
+  if (this.isModified("postTitle")) {
+    this.slug = slugify(this.postTitle, { lower: true, strict: true });
+  }
+  next();
+});
 
 const Posts = mongoose.model('Posts', postSchema)
 export default Posts

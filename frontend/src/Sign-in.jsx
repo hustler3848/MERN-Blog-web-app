@@ -42,6 +42,7 @@ function SignIn() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
+        withCredentials: true,
         credentials: "include",
       });
 
@@ -71,7 +72,7 @@ function SignIn() {
   return (
     <>
       <Header />
-      <div className="min-h-[100vh]  flex flex-col ">
+      <div className="min-h-[100vh] mt-16 flex flex-col ">
         <section className="w-full h-full py-4 md:py-24 lg:py-12 bg-gray-100 dark:bg-slate-950">
           <div className="container flex flex-col sm:flex-row items-center justify-center gap-6 px-4 md:px-6 ">
             <div className="space-y-4">

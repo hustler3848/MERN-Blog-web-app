@@ -57,7 +57,7 @@ export const continueWithGoogle = async (req, res, next) => {
           httpOnly: true,
           secure: false,
         })
-        .json(rest); 
+        .json(rest);
     } else {
       const hashedPassword = await bcryptjs.hashSync(uid, 10);
       const newUser = new User({
@@ -71,23 +71,27 @@ export const continueWithGoogle = async (req, res, next) => {
 
       await newUser.save();
       console.log("created user is", req.body);
-
-      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+        expiresIn: "24h", // Token expires in 24 hour
+      });
       const { password, ...rest } = newUser._doc;
 
-      return res
+      res
         .cookie("access_token", token, {
           httpOnly: true,
           sameSite: "None",
+          secure: false,
         })
         .status(200)
         .json({
           success: true,
           message: "Login successful",
-          user: rest, 
+          user: rest,
         });
     }
+    
+    console.log(rest);
   } catch (error) {
-    next(error); 
+    next(error);
   }
 };

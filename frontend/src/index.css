@@ -1,17 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Faculty+Glyphic&family=Funnel+Display:wght@300..800&family=Handjet:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lexend+Deca:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Press+Start+2P&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
-.ql-editor{
-    font-size: 1.2rem;
-    min-height: 200px;
+.ql-editor {
+  font-size: 1rem;
+  min-height: 200px;
+  font-family: "Inter", serif;
 }
-.react-tagsinputForDark{
-    background-color: black !important;
+
+.react-tagsinputForDark {
+  background-color: black !important;
 }
-.react-tagsinput-inputForDark{
-    background-color: #000 !important;
-    border: 1px solid white !important;
-    color: aliceblue !important;
+
+.react-tagsinput-inputForDark {
+  background-color: #000 !important;
+  border: 1px solid white !important;
+  color: aliceblue !important;
+}
+
+.heroText {
+  font-family: "Poppins", serif;
+}
+
+.heroPrimaryText {
+  font-family: "Lexend Deca", serif;
+}
+
+.heroSection {
+  font-family: "Lexend Deca", serif;
+}
+
+.dmSans {
+  font-family: "DM Sans", serif;
+}
+
+.Lexend {
+  font-family: "Lexend Deca", serif;
+}
+
+.poppins {
+  font-family: "Poppins", serif;
+}
+
+.inter {
+  font-family: "Inter", serif;
+}
+
+.Faculty {
+  font-family: "Faculty Glyphic", serif;
+}
+
+.Funnel {
+  font-family: "Funnel Display", serif;
+}
+
+.kanit {
+  font-family: "Kanit", serif;
+}
+
+.handjet {
+  font-family: "Handjet", serif;
+}
+
+.press {
+
+  font-family: "Press Start 2P", serif;
 }

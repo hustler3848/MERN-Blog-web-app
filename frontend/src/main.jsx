@@ -17,6 +17,7 @@ import PrivateRoutePost from "./Components/Posts/PrivateRoutePost.jsx";
 // import { store } from './app/store
 import { Provider } from 'react-redux'
 import { PersistGate } from "redux-persist/integration/react";
+import PostPage from "./Components/Posts/PostPage.jsx";
 
 
 const router = createBrowserRouter([
@@ -53,6 +54,11 @@ const router = createBrowserRouter([
     path: "/posts/create",
     element: <PrivateRoutePost />,
   },
+  {
+    path: "/posts/:slug",
+    element: <PostPage />,
+  },
+  
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

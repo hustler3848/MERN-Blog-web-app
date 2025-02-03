@@ -23,15 +23,13 @@ function Header() {
   const { currentUserOfBloggingApp } = useSelector((state) => state.userOfBloggingApp);
   const {theme} = useSelector((state)=> state.theme)
   return (
-    <Navbar className="border-b-2 shadow-md dark:bg-slate-950">
+    <Navbar className="border-b-2 fixed top-0 mb-10 z-30 w-full shadow-md dark:bg-slate-950">
       <Link
         to="/"
-        className=" self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white"
+        className=" self-center whitespace-nowrap text-sm sm:text-md bg-neutral-900 text-neutral-200 rounded-md px-5 py-1 font-semibold dark:text-white"
       >
-        <span className="text-center px-2 mx-1 rounded bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white">
-          Blog{" "}
-        </span>
-        App
+        {/* <img src="/logo.jpg" className="w-36 h-auto mix-blend-multiply" alt="" /> */}
+        कथाकोष
       </Link>
       <form>
         <TextInput
@@ -68,7 +66,7 @@ function Header() {
           <Dropdown
             arrowIcon="false"
             inline
-            label={<Avatar alt="user" img={currentUserOfBloggingApp.profilePic} rounded size='sm'/>}
+            label={<Avatar alt="user" img={currentUserOfBloggingApp.profilePic} className="object-cover" rounded size='sm'/>}
           >
             <Dropdown.Header>
               <span className="block text-sm">@{currentUserOfBloggingApp.username}</span>

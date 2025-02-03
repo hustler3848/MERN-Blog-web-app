@@ -11,13 +11,17 @@ import {
   FaCross,
   FaClosedCaptioning,
 } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
 import { AiOutlineX } from "react-icons/ai";
 import { useSelector } from "react-redux";
+import Header from "../Header";
+import { Spinner } from "flowbite-react";
 
 function DashPosts() {
   const [dialogBoxOpen, setdialogBoxOpen] = useState(false);
   const [userPosts, setUserPosts] = useState([]);
-  const [realPost, setRealPost] = useState({});
+  const [loading ,setLoading ] = useState(true)
+  const [error, setError] = useState('');
   const { currentUserOfBloggingApp } = useSelector(
     (state) => state.userOfBloggingApp
   );
@@ -33,25 +37,34 @@ function DashPosts() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        setLoading(true)
         const res = await fetch(
-          `http://localhost:3000/api/posts/getposts?userId=${currentUserOfBloggingApp._id}`
+          `http://localhost:3000/api/posts/getPostsByUser/${currentUserOfBloggingApp._id}`
         );
-        const data = await res.json();
-        // console.log(data);
+        const responseData = await res.json();        
         if (res.ok) {
-          setUserPosts(data);
-          
-
+          setLoading(false)
+          setUserPosts(responseData.data);
         }
       } catch (error) {
-        console.log(error.message);
+        setLoading(false)
+        setError(error.message);
       }
     };
     if (currentUserOfBloggingApp.isAdmin) {
       fetchPosts();
     }
   }, [currentUserOfBloggingApp._id]);
-  
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Spinner size="xl" />
+      </div>
+    );
+    console.log("error : ",error);
+    
+    if (error) return <p>{error}</p>;
   return (
     <div className="posts flex flex-col">
       <main className="flex flex-1 flex-col gap-4 py-4 md:py-2.5 p-1 sm:p-6 md:gap-8 ">
@@ -66,105 +79,6 @@ function DashPosts() {
               Create a Post 
             </Link>
           </div>
-
-          {/* <div className="mt-4 border dark:border-gray-800 shadow-sm rounded-lg">
-            <div className="relative w-full overflow-auto">
-              <table className="w-full caption-bottom text-sm">
-                <thead className="[&amp;_tr]:border-b dark:border-gray-800">
-                  <tr className="border-b dark:border-gray-800 transition-colors hover:bg-neutral-100 dark:hover:bg-slate-900 data-[state=selected]:bg-muted">
-                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                      S.N
-                    </th>
-                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                      Thumbnail
-                    </th>
-                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                      Title
-                    </th>
-                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 hidden md:table-cell">
-                      Published on 
-                    </th>
-                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 hidden md:table-cell">
-                      Status
-                    </th>
-                    <th className="h-12 px-4 align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 text-right">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="[&amp;_tr:last-child]:border-0">
-                  <tr className="border-b dark:border-gray-800 transition-colors hover:bg-neutral-100 dark:hover:bg-slate-900 data-[state=selected]:bg-muted">
-                    <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 font-medium">
-                      1
-                    </td>
-                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                      <img
-                        src="https://img-c.udemycdn.com/course/750x422/3653014_734b_2.jpg"
-                        alt=""
-                        className="h-12 w-12 rounded object-cover"
-                      />
-                    </th>
-                    <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 font-medium">
-                      The Importance of Blogging
-                    </td>
-                    <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 hidden md:table-cell">
-                      May 1, 2023
-                    </td>
-                    <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 hidden md:table-cell">
-                      Published
-                    </td>
-                    <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right"></td>
-                  </tr>
-                  <tr className="border-b dark:border-gray-800 transition-colors dark:hover:bg-slate-900 hover:bg-neutral-100 data-[state=selected]:bg-muted">
-                    <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 font-medium">
-                      2
-                    </td>
-                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                      <img
-                        src="https://img-c.udemycdn.com/course/750x422/3653014_734b_2.jpg"
-                        alt=""
-                        className="h-12 w-12 rounded object-cover"
-                      />
-                    </th>
-                    <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 font-medium">
-                      10 Tips for Effective SEO
-                    </td>
-
-                    <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 hidden md:table-cell">
-                      April 15, 2023
-                    </td>
-                    <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 hidden md:table-cell">
-                      Draft
-                    </td>
-                    <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right"></td>
-                  </tr>
-                  <tr className="border-b dark:border-gray-800 transition-colors dark:hover:bg-slate-900 hover:bg-neutral-100 data-[state=selected]:bg-muted">
-                    <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 font-medium">
-                      3
-                    </td>
-                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                      <img
-                        src="https://img-c.udemycdn.com/course/750x422/3653014_734b_2.jpg"
-                        alt=""
-                        className="h-12 w-12 rounded object-cover"
-                      />
-                    </th>
-                    <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 font-medium">
-                      <Link>The Future of Content Marketing</Link>
-                    </td>
-
-                    <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 hidden md:table-cell">
-                      March 30, 2023
-                    </td>
-                    <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 hidden md:table-cell">
-                      Scheduled
-                    </td>
-                    <td className="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right"></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>  */}
           {dialogBoxOpen && (
             <div className="w-screen fixed top-0 left-0 z-10 sm:px-2 h-screen bg-gray-400 dark:bg-slate-800 opacity-90">
               <div
@@ -174,7 +88,7 @@ function DashPosts() {
                   className=" z-20 absolute w-fit p-3 top-0 right-0 cursor-pointer"
                   onClick={handleDialogBox}
                 >
-                  <AiOutlineX className="z-20 text-md" color="red" />
+                  <RxCross2 className="z-20 text-md" color="red" />
                 </div>
                 <p className="font-semibold pt-5">
                   Are you sure you want to Delete this post ?
@@ -220,7 +134,7 @@ function DashPosts() {
                     <div className="titleAndDates flex flex-col justify-evenly gap-2 items-start">
                       <div className="title">
                         <Link
-                          to={`/dashboard/posts/edit/${post.slug}`}
+                          to={`/posts/${post.slug}`}
                           className="text-[16px] font-semibold line-clamp-2"
                         >
                           {post.postTitle}
@@ -256,15 +170,15 @@ function DashPosts() {
                       <div className="viewsCommentsAndOther flex flex-row gap-2 items-end justify-end">
                         <div className="views flex flex-row items-center gap-1">
                           <FaEye size="16" />
-                          <p className="text-xs">100</p>
+                          <p className="text-xs">{post.views}</p>
                         </div>
                         <div className="comments flex flex-row items-center gap-1">
                           <FaComment size="16" />
-                          <p className="text-xs">6</p>
+                          <p className="text-xs">{post.commentCount}</p>
                         </div>
                         <div className="likes flex flex-row items-center gap-1">
                           <FaThumbsUp size="15" className="mb-1" />
-                          <p className="text-xs">23</p>
+                          <p className="text-xs">{post.Likes}</p>
                         </div>
                       </div>
                     </div>
